@@ -70,7 +70,7 @@ class clsAWStats
         $this->sFileName = $sFileName;
 
         if (is_readable($sFilePath)) {
-            $this->sAWStats = htmlspecialchars(file_get_contents($sFilePath));
+            $this->sAWStats = strip_tags(file_get_contents($sFilePath));
             $this->bLoaded  = true;
         }
         else
@@ -250,11 +250,12 @@ class clsAWStats
         // produce xml
         $aXML    = array();
         $arrData = $this->GetSection($sSection);
+
         $aXML[]  = "<info lastupdate=\"" . $this->dtLastUpdate . "\" />\n<data>\n";
         for ($iIndexItem = 0; $iIndexItem < count($arrData); $iIndexItem++) {
             $sTemp = "";
             for ($iIndexAttr = 0; $iIndexAttr < count($arrData[$iIndexItem]); $iIndexAttr++) {
-                $sTemp .= $this->arrLabel[$sSection][$iIndexAttr] . "=\"" . htmlspecialchars(urldecode(trim($arrData[$iIndexItem][$iIndexAttr]))) . "\" ";
+                $sTemp .= $this->arrLabel[$sSection][$iIndexAttr] . "=\"" . htmlspecialchars(trim($arrData[$iIndexItem][$iIndexAttr])) . "\" ";
             }
             $aXML[] = ("<item " . $sTemp . "/>\n");
         }
